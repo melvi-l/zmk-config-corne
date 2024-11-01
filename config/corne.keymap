@@ -1,56 +1,118 @@
-/*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+// TAP_DANCE settings
+#define TAP_SPEED 200
+
 / {
-        keymap {
-                compatible = "zmk,keymap";
+    behaviors {  
+        semi_colon: morph_semi_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp SEMICOLON>, <&kp COLON>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+            };
+        quote: quote {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>; 
+            bindings = <&kp SINGLE_QUOTE>, <&kp DOUBLE_QUOTES>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+            }; 
+        comma_less: comma_less {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>; 
+            bindings = <&kp COMMA>, <&kp LESS_THAN>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+            }; 
+        period_great: period_great {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>; 
+            bindings = <&kp PERIOD>, <&kp GREATER_THAN>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+            }; 
+        ret_bspc: ret_bspc {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>; 
+            tapping-term-ms = <TAP_SPEED>; 
+            bindings = <&kp RET>, <&kp BSPC>;
+            }; 
+        spc_esc: spc_esc {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>; 
+            tapping-term-ms = <TAP_SPEED>; 
+            bindings = <&kp SPC>, <&kp ESC>;
+            };
+    };
 
-                default_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BSPC |
-// | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
-// | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
-//                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
-                        bindings = <
-   &kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-   &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-   &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                  &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
-                        >;
-                };
-                lower_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BSPC |
-// | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-// | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
-                        bindings = <
-   &kp TAB    &kp N1       &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-   &kp LSHFT  &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                                    &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
-                        >;
-                };
-
-                raise_layer {
-// -----------------------------------------------------------------------------------------
-// |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BSPC |
-// | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
-                        bindings = <
-   &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp ASTRK &kp LPAR &kp RPAR &kp BSPC
-   &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT  &kp RBKT &kp BSLH &kp GRAVE
-   &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC  &kp RBRC &kp PIPE &kp TILDE
-                             &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
-                        >;
-                };
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
         };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+// -----------------------------------------------------------------------------------------
+// |  TAB   |  ; :   |  , <   |  . >    |   P    |    Y    |         |     F    |    G   |  C  |  R  |  L  | TAB |
+// |  ESC   | A LGUI | O LALT | E LSHIT | U LCTL |    I    |         |     S    | H RCTL | J RSHIFT | K LALT | L RGUI | BKSP |
+// | _LSFT  |  ' "   |   Q    |    D    |   B    |    X    |         |     T    |   W    |    M     |   V    |   Z    | DEL  |
+//                            |    _    | LOWER  | SPC ESC |         | ENT BSPC |  RAISE |   _    | 
+            display-name = "Base";
+            bindings = <
+   &kb TAB    &trans         &kp U        &kp T          &kp C         &kp X                   &kp G       &kp D         &kp F          &kp R        &trans        &kp TAB
+   &kp ESC    &mt LGUI S     &mt LALT O   &mt LSHIFT E   &mt LCTRL A   &kp I                   &kp V       &mt RCTRL H   &mt RSHIFT J   &mt LALT K   &mt RGUI L    &kp BSPC
+   &trans     &kp Q          &kp O        &kp N          &kp B         &kp Y                   &kp P       &kp W         &kp O          &kp M        &kp Z         &kp DEL
+                                          &kp SQT        &mo 1         &spc_esc                &ret_bspc   &mo 2         &kp DQT
+            >;
+        };
+        lower_layer {
+// -----------------------------------------------------------------------------------------
+// |   |  7   |   5   |  3   |  1   | 9  |            |  0  |  2  |  4  |  6  |  8  |      |
+// | F11 |  F1  |   F2  |  F3  |  F4  | F5 |            | F10 |  F2 |  F4 | F6  |  F8   |      |
+// | F12 |  END |  PGUP | PGDN | HOME | '  |            | "   | LEFT | DOWN | UP | RIGHT |     |
+//                   |      |  XX  |    |             |    |     |     |
+            display-name = "Lower";
+            bindings = <
+   &trans    &kp N7   &kp N5   &kp N3   &kp N1   &kp N9         &kp N0   &kp N2     &kp N4      &kp N6      &kp N8   &trans
+   &kp F11   &kp F1   &kp F2   &kp F3   &kp F4   &kp F5         &trans   &kp LEFT   &kp DOWN    &kp UP      &kp RIGHT   &trans  
+   &kp F12   &kp F6   &kp F7   &kp F8   &kp F9   &kp F10        &trans   &kp HOME   &kp PG_DN   &kp PG_UP   &kp END     &trans   
+                          	   &trans   &trans   &trans         &trans   &trans     &trans
+            >;
+        };
+
+        raise_layer {
+// -----------------------------------------------------------------------------------------
+// |    |  ~  |  &  |  :  |  .  |  @  |       |  ^  |  ,  |  ;  |  |  |  *  |    |
+// |    |  ?  |  [  |  {  |  (  |  =  |       |  +  |  )  |  }  |  ]  |  !  |    |
+// |    |  $  |  <  |  -  |  /  |  #  |       |  %  |  \  |  _  |  >  |  `  |    |
+//                  |     |     |     |       |     | XX  |     |
+            display-name = "Raise";
+            bindings = <
+   &trans  &kp TILDE   &kp AMPS         &kp COLON   &kp PERIOD   &kp AT            &kp CARET   &kp COMMA       &kp SEMICOLON    &kp PIPE           &kp STAR   &trans
+   &trans  &kp QMARK   &kp LBKT         &kp LBRC    &kp LPAR     &kp EQUAL         &kp PLUS    &kp RPAR        &kp RBRC         &kp RBKT           &kp EXCL   &trans    
+   &trans  &kp DLLR    &kp LESS_THAN    &kp MINUS   &kp SLASH    &kp HASH          &kp PRCNT   &kp BACKSLASH   &kp UNDERSCORE   &kp GREATER_THAN   &kp GRAVE  &trans
+                    	                &trans      &trans       &trans            &trans      &trans          &trans
+            >;
+        };
+
+
+        bt_media_layer {
+// -----------------------------------------------------------------------------------------
+// |    |     |     | BCTL |     |     |        |    |      |            |      |    |    |
+// |    | BT1 | BT2 | BT3  | BT4 | BT5 |        |    | PRV  | PLAY/PAUSE | NXT  |    |    |
+// |    |     |     |      |     |     |        |    | VOL- | MUTE       | VOL+ |    |    |
+//                  |      |     |     |        |    |      |            |
+            display-name = "Bluetooth";
+            bindings = <
+   &trans    &trans         &trans         &bt BT_CLR     &trans         &trans                &trans    &trans          &trans        &trans         &trans   &trans     
+   &trans    &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &bt BT_SEL 4          &trans    &kp C_PREV      &kp C_PP      &kp C_NEXT     &trans   &trans     
+   &trans    &trans         &trans         &trans         &trans         &trans                &trans    &kp C_VOL_DN    &kp C_MUTE    &kp C_VOL_UP   &trans   &trans        
+                          	               &trans         &trans         &trans                &trans    &trans          &trans                                      
+            >;
+        }; 
+    };
 };
