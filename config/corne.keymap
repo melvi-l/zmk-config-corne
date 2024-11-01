@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -7,30 +13,6 @@
 
 / {
     behaviors {  
-        semi_colon: morph_semi_colon {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp SEMICOLON>, <&kp COLON>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-            };
-        quote: quote {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>; 
-            bindings = <&kp SINGLE_QUOTE>, <&kp DOUBLE_QUOTES>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-            }; 
-        comma_less: comma_less {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>; 
-            bindings = <&kp COMMA>, <&kp LESS_THAN>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-            }; 
-        period_great: period_great {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>; 
-            bindings = <&kp PERIOD>, <&kp GREATER_THAN>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-            }; 
         ret_bspc: ret_bspc {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>; 
@@ -63,7 +45,7 @@
 //                            |    _    | LOWER  | SPC ESC |         | ENT BSPC |  RAISE |   _    | 
             display-name = "Base";
             bindings = <
-   &kb TAB    &trans         &kp U        &kp T          &kp C         &kp X                   &kp G       &kp D         &kp F          &kp R        &trans        &kp TAB
+   &kp TAB    &trans         &kp U        &kp T          &kp C         &kp X                   &kp G       &kp D         &kp F          &kp R        &trans        &kp TAB
    &kp ESC    &mt LGUI S     &mt LALT O   &mt LSHIFT E   &mt LCTRL A   &kp I                   &kp V       &mt RCTRL H   &mt RSHIFT J   &mt LALT K   &mt RGUI L    &kp BSPC
    &trans     &kp Q          &kp O        &kp N          &kp B         &kp Y                   &kp P       &kp W         &kp O          &kp M        &kp Z         &kp DEL
                                           &kp SQT        &mo 1         &spc_esc                &ret_bspc   &mo 2         &kp DQT
